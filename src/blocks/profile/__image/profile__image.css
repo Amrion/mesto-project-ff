@@ -1,5 +1,6 @@
 .profile__image {
   width: 120px;
+  background-image: url("../../../images/avatar.jpg");
   height: 120px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
