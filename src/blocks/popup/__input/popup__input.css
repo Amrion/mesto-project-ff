@@ -6,12 +6,27 @@
   font-size: 14px;
   line-height: 18px;
   box-sizing: border-box;
-  padding: 10px 0 0;
-  margin-bottom: 10px;
 }
 
 .popup__input:last-of-type {
   margin-bottom: 0;
+}
+
+.input-error {
+  border-bottom: 2px solid rgba(255, 0, 0, 1);
+}
+
+.popup__input-error {
+  opacity: 0;
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  height: 28px;
+  color: rgba(255, 0, 0, 1);
+}
+
+.popup__input-error_active {
+  opacity: 1;
 }
 
 @media screen and (max-width: 568px) {
