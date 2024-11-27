@@ -7,115 +7,101 @@ const config = {
 }
 
 export async function getProfileInfo() {
-    try {
-        const result = await fetch(`${config.baseUrl}/users/me`, {
-            headers: config.headers
-        });
+    const result = await fetch(`${config.baseUrl}/users/me`, {
+        headers: config.headers
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return await result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function getCards() {
-    try {
-        const result = await fetch(`${config.baseUrl}/cards`, {
-            headers: config.headers
-        });
+    const result = await fetch(`${config.baseUrl}/cards`, {
+        headers: config.headers
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return await result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function changeProfile(name, about) {
-    try {
-        const result = await fetch(`${config.baseUrl}/users/me`, {
-            method: 'PATCH',
-            headers: config.headers,
-            body: JSON.stringify({
-                name,
-                about,
-            })
-        });
+    const result = await fetch(`${config.baseUrl}/users/me`, {
+        method: 'PATCH',
+        headers: config.headers,
+        body: JSON.stringify({
+            name,
+            about,
+        })
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return await result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function uploadCards(name, link) {
-    try {
-        const result = await fetch(`${config.baseUrl}/cards`, {
-            method: 'POST',
-            headers: config.headers,
-            body: JSON.stringify({
-                name,
-                link,
-            })
-        });
+    const result = await fetch(`${config.baseUrl}/cards`, {
+        method: 'POST',
+        headers: config.headers,
+        body: JSON.stringify({
+            name,
+            link,
+        })
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return await result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function deleteCard(id) {
-    try {
-        const result = await fetch(`${config.baseUrl}/cards/${id}`, {
-            method: 'DELETE',
-            headers: config.headers,
-        });
+    const result = await fetch(`${config.baseUrl}/cards/${id}`, {
+        method: 'DELETE',
+        headers: config.headers,
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return await result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function toggleLike(id, putLike) {
-    try {
-        const result = await fetch(`${config.baseUrl}/cards/likes/${id}`, {
-            method: putLike ? 'PUT' : 'DELETE',
-            headers: config.headers,
-        });
+    const result = await fetch(`${config.baseUrl}/cards/likes/${id}`, {
+        method: putLike ? 'PUT' : 'DELETE',
+        headers: config.headers,
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return result.json();
     }
+
+    return await Promise.reject(result.status);
 }
 
 export async function uploadAvatar(avatar) {
-    try {
-        const result = await fetch(`${config.baseUrl}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: config.headers,
-            body: JSON.stringify({
-                avatar,
-            })
-        });
+    const result = await fetch(`${config.baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: config.headers,
+        body: JSON.stringify({
+            avatar,
+        })
+    });
 
-        if (result.ok) {
-            return result.json();
-        }
-    } catch (e) {
-        console.log(e);
+    if (result.ok) {
+        return result.json();
     }
+
+    return await Promise.reject(result.status);
 }

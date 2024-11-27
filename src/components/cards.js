@@ -33,32 +33,33 @@ export function makeCardManager() {
     }
 
     async function deleteCardItem(node, id) {
-        const result = await deleteCard(id);
-
-        if (result) {
+        try {
+            await deleteCard(id);
             node.remove();
+        } catch (e) {
+            console.error('Failed to delete card:', e);
         }
     }
 
-    async function addFavouriteCardItem(node, card, clientId, countLike) {
+    async function addFavouriteCardItem(node, card, countLike) {
         const isCardLiked = node.classList.contains('card__like-button_is-active');
 
-        if (isCardLiked) {
-            const result = await toggleLike(card._id, false);
+        try {
+            if (isCardLiked) {
+                const result = await toggleLike(card._id, false);
 
-            if (result) {
                 node.classList.remove('card__like-button_is-active');
 
                 countLike.textContent = result.likes.length;
-            }
-        } else {
-            const result = await toggleLike(card._id, true);
+            } else {
+                const result = await toggleLike(card._id, true);
 
-            if (result) {
                 node.classList.add('card__like-button_is-active');
 
                 countLike.textContent = result.likes.length;
             }
+        } catch (e) {
+            console.error('Failed to liked card:', e);
         }
     }
 

@@ -61,6 +61,8 @@ export function makeValidationManager() {
         inputElements.forEach(inputElement => {
             const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
+            inputElement.setCustomValidity("");
+
             inputElement.classList.remove(inputErrorClass);
             errorElement.textContent = '';
             errorElement.classList.remove(errorClass);

@@ -42,29 +42,28 @@ const avatarBtn = document.querySelector('.profile__image');
 
 const cardList = document.querySelector('.places__list');
 
-const dataResults = await Promise.all([
-    getProfileInfo(),
-    getCards(),
-]);
-
 let clientId;
 
-if (dataResults[0]) {
-    profileName.textContent = dataResults[0].name;
-    profileDescription.textContent = dataResults[0].about;
-    profileAvatar.style = `background-image: url(${dataResults[0].avatar})`;
+async function getInfo() {
+    try {
+        const dataResults = await Promise.all([
+            getProfileInfo(),
+            getCards(),
+        ]);
 
-    clientId = dataResults[0]._id;
-} else {
-    profileName.textContent = 'Ваше имя';
-    profileDescription.textContent = 'Ваше описание';
+        profileName.textContent = dataResults[0].name;
+        profileDescription.textContent = dataResults[0].about;
+        profileAvatar.style = `background-image: url(${dataResults[0].avatar})`;
+
+        clientId = dataResults[0]._id;
+
+        dataResults[1].forEach((item) => renderCard(item, clientId));
+    } catch (e) {
+        console.error('Failed load info:', e);
+    }
 }
 
-if (dataResults[1]) {
-    dataResults[1].forEach((item) => renderCard(item, clientId));
-} else {
-    initialCards.forEach((item) => renderCard(item, clientId));
-}
+getInfo();
 
 const validationConfigDefault = {
     inputSelector: '.popup__input',
@@ -101,59 +100,74 @@ function renderCard(item, clientId, method = "append") {
 }
 
 async function submitUserFormHandler(e) {
-    buttonUserModal.textContent = 'Сохранить...';
+    try {
+        buttonUserModal.textContent = 'Сохранить...';
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const result = await changeProfile(nameInput.value, descriptionInput.value);
+        await changeProfile(nameInput.value, descriptionInput.value);
 
-    if (result) {
         profileName.textContent = nameInput.value;
         profileDescription.textContent = descriptionInput.value;
 
-        closePopup(userModal);
+        buttonUserModal.classList.add('popup__button_disabled');
+        buttonUserModal.disabled = true;
 
+        closePopup(userModal);
+    } catch (e) {
+        console.error('Failed to submit form', e);
+    } finally {
         buttonUserModal.textContent = 'Сохранить';
     }
 }
 
 async function submitCardFormHandler(e) {
-    buttonCardModal.textContent = 'Сохранить...';
+    try {
+        buttonCardModal.textContent = 'Сохранить...';
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const item = {
-        name: cardNameInput.value,
-        link: cardImgInput.value,
-    }
+        const item = {
+            name: cardNameInput.value,
+            link: cardImgInput.value,
+        }
 
-    const result = await uploadCards(item.name, item.link);
+        const result = await uploadCards(item.name, item.link);
 
-    if (result) {
         renderCard(result, clientId,  'prepend');
 
         e.target.reset();
 
-        closePopup(cardModal);
+        buttonCardModal.classList.add('popup__button_disabled');
+        buttonCardModal.disabled = true;
 
+        closePopup(cardModal);
+    } catch (e) {
+        console.error('Failed to submit form', e);
+    } finally {
         buttonCardModal.textContent = 'Сохранить';
     }
 }
 
 async function submitAvatarFormHandler(e) {
-    buttonAvatarModal.textContent = 'Сохранить...';
+    try {
+        buttonAvatarModal.textContent = 'Сохранить...';
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const result = await uploadAvatar(avatarFormInput.value);
+        await uploadAvatar(avatarFormInput.value);
 
-    if (result) {
         avatarBtn.style = `background-image: url(${avatarFormInput.value})`;
 
         e.target.reset();
 
-        closePopup(avatarModal);
+        buttonAvatarModal.classList.add('popup__button_disabled');
+        buttonAvatarModal.disabled = true;
 
+        closePopup(avatarModal);
+    } catch (e) {
+        console.error('Failed to submit form', e);
+    } finally {
         buttonAvatarModal.textContent = 'Сохранить';
     }
 }
